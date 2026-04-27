@@ -1,0 +1,1263 @@
+<!DOCTYPE html>
+<html lang="bn">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Git সম্পূর্ণ গাইড</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;600;700&family=Playfair+Display:wght@700;900&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+  <header>
+    <a class="skip-link" href="#intro">কন্টেন্টে যাও</a>
+    <div class="git-logo">
+      <div class="git-icon">G</div>
+    </div>
+    <h1>Git সম্পূর্ণ গাইড</h1>
+    <p class="subtitle">প্রতিটি কমান্ড — কী, কেন, কোথায়, কখন ব্যবহার করবে (বাংলায়, সহজভাবে)</p>
+    <div class="stats-row">
+      <div class="stat">
+        <div class="stat-num">40+</div>
+        <div class="stat-label">কমান্ড</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">৬</div>
+        <div class="stat-label">ক্যাটাগরি</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">১০০%</div>
+        <div class="stat-label">বাংলায়</div>
+      </div>
+    </div>
+  </header>
+
+  <nav>
+    <div class="nav-inner">
+      <button class="nav-btn active" onclick="scrollTo('intro', this)">📖 ভূমিকা</button>
+      <button class="nav-btn" onclick="scrollTo('flow', this)">🔄 ওয়ার্কফ্লো</button>
+      <button class="nav-btn" onclick="scrollTo('init', this)">🚀 শুরু</button>
+      <button class="nav-btn" onclick="scrollTo('basic', this)">📁 মূল কমান্ড</button>
+      <button class="nav-btn" onclick="scrollTo('branch', this)">🌿 ব্রাঞ্চ ও মার্জ</button>
+      <button class="nav-btn" onclick="scrollTo('remote', this)">☁️ রিমোট</button>
+      <button class="nav-btn" onclick="scrollTo('undo', this)">↩️ পূর্বাবস্থা</button>
+      <button class="nav-btn" onclick="scrollTo('advanced', this)">⚡ অ্যাডভান্সড</button>
+      <button class="nav-btn" onclick="scrollTo('cheat', this)">📋 চিটশিট</button>
+      <button class="nav-btn" onclick="scrollTo('tips', this)">💡 টিপস</button>
+    </div>
+  </nav>
+
+  <main>
+
+    <!-- Search -->
+    <div class="search-wrap">
+      <span class="search-icon">🔍</span>
+      <input id="searchInput" class="search-input" type="text"
+        placeholder="কমান্ড খুঁজুন... (যেমন: commit, push, merge)" oninput="filterCards(this.value)" />
+      <div class="search-meta" id="searchMeta" aria-live="polite"></div>
+    </div>
+
+    <!-- INTRO -->
+    <div class="section" id="intro">
+      <div class="section-header">
+        <div class="section-icon" style="background:rgba(240,80,51,0.15)">📖</div>
+        <div>
+          <div class="section-title">Git কী?</div>
+          <div class="section-desc">ভার্সন কন্ট্রোলের জগতে স্বাগতম</div>
+        </div>
+      </div>
+      <div class="intro-card">
+        <p><strong>Git</strong> হলো একটি <strong>ডিস্ট্রিবিউটেড ভার্সন কন্ট্রোল সিস্টেম</strong>। সহজ ভাষায়, এটি তোমার
+          কোডের সব পরিবর্তনের ইতিহাস রাখে — কখন কী পরিবর্তন হয়েছে, কে করেছে, কেন করেছে — সব কিছু ট্র্যাক করে।</p>
+        <br>
+        <p><strong>Git কেন দরকার?</strong> ধরো তুমি একটা ফিচার বানাতে গিয়ে পুরো প্রোজেক্ট নষ্ট করে ফেললে — Git দিয়ে এক
+          কমান্ডেই আগের অবস্থায় ফিরে যেতে পারবে। দলে কাজ করার সময় একসাথে একই ফাইলে কাজ করা যায়। GitHub/GitLab-এ কোড
+          হোস্ট করা যায়।</p>
+        <br>
+        <p>Git ব্যবহার করে তুমি মূলত <strong>৪টি এলাকায়</strong> কাজ করো: Working Directory (তোমার ফাইল), Staging Area
+          (commit-এর জন্য প্রস্তুত ফাইল), Local Repository (তোমার মেশিনে সেভ করা ইতিহাস), এবং Remote Repository
+          (GitHub-এ থাকা ক্লাউড কপি)।</p>
+      </div>
+    </div>
+
+    <!-- WORKFLOW -->
+    <div class="section" id="flow">
+      <div class="section-header">
+        <div class="section-icon" style="background:rgba(78,201,148,0.15)">🔄</div>
+        <div>
+          <div class="section-title">Git ওয়ার্কফ্লো</div>
+          <div class="section-desc">ফাইল কীভাবে এক স্টেজ থেকে আরেক স্টেজে যায়</div>
+        </div>
+      </div>
+      <div class="flow-container">
+        <div class="flow-title">// Git এর ৪টি স্তর</div>
+        <div class="flow-stages">
+          <div class="flow-stage s1">
+            <div class="flow-box">
+              <div class="flow-box-label">Working Dir</div>
+              <div class="flow-box-bn">তোমার ফাইল যেখানে edit করো</div>
+            </div>
+          </div>
+          <div class="flow-arrow">
+            <div class="arrow-cmd">git add</div>
+            <div class="arrow-line"></div>
+          </div>
+          <div class="flow-stage s2">
+            <div class="flow-box">
+              <div class="flow-box-label">Staging Area</div>
+              <div class="flow-box-bn">commit-এর জন্য তৈরি</div>
+            </div>
+          </div>
+          <div class="flow-arrow">
+            <div class="arrow-cmd">git commit</div>
+            <div class="arrow-line"></div>
+          </div>
+          <div class="flow-stage s3">
+            <div class="flow-box">
+              <div class="flow-box-label">Local Repo</div>
+              <div class="flow-box-bn">তোমার পিসিতে ইতিহাস</div>
+            </div>
+          </div>
+          <div class="flow-arrow">
+            <div class="arrow-cmd">git push</div>
+            <div class="arrow-line"></div>
+          </div>
+          <div class="flow-stage s4">
+            <div class="flow-box">
+              <div class="flow-box-label">Remote Repo</div>
+              <div class="flow-box-bn">GitHub/GitLab-এ</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- INIT COMMANDS -->
+    <div class="section cat-init" id="init">
+      <div class="section-header">
+        <div class="section-icon" style="background:rgba(240,80,51,0.15)">🚀</div>
+        <div>
+          <div class="section-title">শুরু করার কমান্ড</div>
+          <div class="section-desc">নতুন রেপো তৈরি বা ক্লোন করা</div>
+        </div>
+      </div>
+      <div class="cmd-grid">
+
+        <div class="cmd-card" data-cmd="git init">
+          <div class="cmd-header">
+            <span class="cmd-badge">INIT</span>
+            <div>
+              <div class="cmd-name">git init</div>
+              <div class="cmd-oneliner">নতুন Git রেপো তৈরি করো</div>
+            </div>
+          </div>
+          <div class="cmd-body">
+            <div class="cmd-what">
+              <div class="cmd-label">🔷 কী করে</div>
+              <div class="cmd-text">বর্তমান ফোল্ডারকে একটি Git রেপোজিটরিতে পরিণত করে। একটি লুকানো <code>.git</code>
+                ফোল্ডার তৈরি করে যেখানে সব ইতিহাস সংরক্ষিত হয়।</div>
+            </div>
+            <div class="cmd-why">
+              <div class="cmd-label">🔶 কেন ব্যবহার করবে</div>
+              <div class="cmd-text">যখন নতুন একটি প্রোজেক্ট শুরু করছ এবং সেটার ভার্সন ট্র্যাক করতে চাও।</div>
+            </div>
+            <div class="cmd-when">
+              <div class="cmd-label">🕐 কখন</div>
+              <div class="cmd-text">প্রোজেক্টের একদম শুরুতে, একবারই ব্যবহার করতে হয়।</div>
+            </div>
+            <div class="examples">
+              <div class="examples-title">উদাহরণ</div>
+              <span class="code-line">mkdir my-project && cd my-project</span>
+              <span class="code-line">git init <span class="comment"># এই ফোল্ডারে Git শুরু করো</span></span>
+              <span class="code-line">git init my-folder <span class="comment"># নতুন ফোল্ডার তৈরি করে
+                  init</span></span>
+            </div>
+          </div>
+        </div>
+
+        <div class="cmd-card" data-cmd="git clone">
+          <div class="cmd-header">
+            <span class="cmd-badge">INIT</span>
+            <div>
+              <div class="cmd-name">git clone &lt;url&gt;</div>
+              <div class="cmd-oneliner">দূরের রেপো কপি করে আনো</div>
+            </div>
+          </div>
+          <div class="cmd-body">
+            <div class="cmd-what">
+              <div class="cmd-label">🔷 কী করে</div>
+              <div class="cmd-text">GitHub বা অন্য কোনো সার্ভার থেকে একটি রেপোজিটরির সম্পূর্ণ কপি তোমার মেশিনে নিয়ে আসে
+                — সব ইতিহাস সহ।</div>
+            </div>
+            <div class="cmd-why">
+              <div class="cmd-label">🔶 কেন ব্যবহার করবে</div>
+              <div class="cmd-text">কোনো open-source প্রোজেক্টে contribute করতে বা টিমের প্রোজেক্টে যোগ দিতে।</div>
+            </div>
+            <div class="cmd-when">
+              <div class="cmd-label">🕐 কখন</div>
+              <div class="cmd-text">যখন প্রথমবার কোনো রেমোট প্রোজেক্ট লোকালে নামাতে হবে।</div>
+            </div>
+            <div class="examples">
+              <div class="examples-title">উদাহরণ</div>
+              <span class="code-line">git clone https://github.com/user/repo.git</span>
+              <span class="code-line">git clone &lt;url&gt; my-folder <span class="comment"># নির্দিষ্ট
+                  ফোল্ডারে</span></span>
+              <span class="code-line">git clone --depth 1 &lt;url&gt; <span class="comment"># শুধু শেষ
+                  commit</span></span>
+            </div>
+          </div>
+        </div>
+
+        <div class="cmd-card" data-cmd="git config">
+          <div class="cmd-header">
+            <span class="cmd-badge">INIT</span>
+            <div>
+              <div class="cmd-name">git config</div>
+              <div class="cmd-oneliner">Git সেটিংস কনফিগার করো</div>
+            </div>
+          </div>
+          <div class="cmd-body">
+            <div class="cmd-what">
+              <div class="cmd-label">🔷 কী করে</div>
+              <div class="cmd-text">তোমার নাম, ইমেইল, এডিটর ইত্যাদি Git-এর কনফিগারেশন সেট করে। এই তথ্য প্রতিটি commit-এ
+                যুক্ত হয়।</div>
+            </div>
+            <div class="cmd-why">
+              <div class="cmd-label">🔶 কেন ব্যবহার করবে</div>
+              <div class="cmd-text">Git ইনস্টলের পরপরই পরিচয় সেট করা দরকার। ছাড়া commit হবে না।</div>
+            </div>
+            <div class="cmd-when">
+              <div class="cmd-label">🕐 কখন</div>
+              <div class="cmd-text">Git ইনস্টলের প্রথম দিনেই করতে হয়।</div>
+            </div>
+            <div class="examples">
+              <div class="examples-title">উদাহরণ</div>
+              <span class="code-line">git config --global user.name "তোমার নাম"</span>
+              <span class="code-line">git config --global user.email "email@example.com"</span>
+              <span class="code-line">git config --list <span class="comment"># সব সেটিং দেখো</span></span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- BASIC COMMANDS -->
+    <div class="section cat-basic" id="basic">
+      <div class="section-header">
+        <div class="section-icon" style="background:rgba(91,156,246,0.15)">📁</div>
+        <div>
+          <div class="section-title">মূল কমান্ড</div>
+          <div class="section-desc">রোজকার কাজে যা সবচেয়ে বেশি লাগে</div>
+        </div>
+      </div>
+      <div class="cmd-grid">
+
+        <div class="cmd-card" data-cmd="git status">
+          <div class="cmd-header">
+            <span class="cmd-badge">BASIC</span>
+            <div>
+              <div class="cmd-name">git status</div>
+              <div class="cmd-oneliner">রেপোর বর্তমান অবস্থা দেখো</div>
+            </div>
+          </div>
+          <div class="cmd-body">
+            <div class="cmd-what">
+              <div class="cmd-label">🔷 কী করে</div>
+              <div class="cmd-text">কোন ফাইল পরিবর্তন হয়েছে, কোনটি staged আছে, কোনটি untracked — এই সব তথ্য দেখায়।
+              </div>
+            </div>
+            <div class="cmd-why">
+              <div class="cmd-label">🔶 কেন ব্যবহার করবে</div>
+              <div class="cmd-text">Commit করার আগে সব ঠিক আছে কিনা দেখতে। এটি সবচেয়ে বেশি ব্যবহৃত কমান্ড।</div>
+            </div>
+            <div class="cmd-when">
+              <div class="cmd-label">🕐 কখন</div>
+              <div class="cmd-text">যেকোনো কাজের আগে-পরে। যখনই সন্দেহ হবে।</div>
+            </div>
+            <div class="examples">
+              <div class="examples-title">উদাহরণ</div>
+              <span class="code-line">git status</span>
+              <span class="code-line">git status -s <span class="comment"># সংক্ষিপ্ত আউটপুট</span></span>
+            </div>
+          </div>
+        </div>
+
+        <div class="cmd-card" data-cmd="git add">
+          <div class="cmd-header">
+            <span class="cmd-badge">BASIC</span>
+            <div>
+              <div class="cmd-name">git add</div>
+              <div class="cmd-oneliner">ফাইল staging area-তে রাখো</div>
+            </div>
+          </div>
+          <div class="cmd-body">
+            <div class="cmd-what">
+              <div class="cmd-label">🔷 কী করে</div>
+              <div class="cmd-text">নির্দিষ্ট ফাইলগুলোকে staging area-তে যোগ করে, মানে পরবর্তী commit-এ অন্তর্ভুক্ত করার
+                জন্য চিহ্নিত করে।</div>
+            </div>
+            <div class="cmd-why">
+              <div class="cmd-label">🔶 কেন ব্যবহার করবে</div>
+              <div class="cmd-text">শুধু নির্দিষ্ট পরিবর্তনগুলো commit করতে চাইলে। সব ফাইল একবারে না করে আলাদা করা যায়।
+              </div>
+            </div>
+            <div class="cmd-when">
+              <div class="cmd-label">🕐 কখন</div>
+              <div class="cmd-text">Commit করার ঠিক আগে।</div>
+            </div>
+            <div class="examples">
+              <div class="examples-title">উদাহরণ</div>
+              <span class="code-line">git add index.html <span class="comment"># একটি ফাইল</span></span>
+              <span class="code-line">git add . <span class="comment"># সব পরিবর্তিত ফাইল</span></span>
+              <span class="code-line">git add *.js <span class="comment"># সব .js ফাইল</span></span>
+              <span class="code-line">git add -p <span class="comment"># অংশ বিশেষ করে add</span></span>
+            </div>
+          </div>
+        </div>
+
+        <div class="cmd-card" data-cmd="git commit">
+          <div class="cmd-header">
+            <span class="cmd-badge">BASIC</span>
+            <div>
+              <div class="cmd-name">git commit</div>
+              <div class="cmd-oneliner">পরিবর্তন স্থায়ীভাবে সেভ করো</div>
+            </div>
+          </div>
+          <div class="cmd-body">
+            <div class="cmd-what">
+              <div class="cmd-label">🔷 কী করে</div>
+              <div class="cmd-text">Staging area-তে থাকা পরিবর্তনগুলো একটি snapshot হিসেবে রেপোতে সেভ করে। প্রতিটি
+                commit-এর একটি অনন্য ID (hash) থাকে।</div>
+            </div>
+            <div class="cmd-why">
+              <div class="cmd-label">🔶 কেন ব্যবহার করবে</div>
+              <div class="cmd-text">কাজের একটি milestone ধরে রাখতে। ভবিষ্যতে ফিরে আসা যাবে।</div>
+            </div>
+            <div class="cmd-when">
+              <div class="cmd-label">🕐 কখন</div>
+              <div class="cmd-text">একটি ফিচার বা ফিক্স সম্পন্ন হলে। ছোট ছোট commit করা ভালো অভ্যাস।</div>
+            </div>
+            <div class="examples">
+              <div class="examples-title">উদাহরণ</div>
+              <span class="code-line">git commit -m "Login feature যোগ করা হয়েছে"</span>
+              <span class="code-line">git commit -am "Bug fix" <span class="comment"># add + commit একসাথে</span></span>
+              <span class="code-line">git commit --amend <span class="comment"># শেষ commit সংশোধন</span></span>
+            </div>
+          </div>
+        </div>
+
+        <div class="cmd-card" data-cmd="git log">
+          <div class="cmd-header">
+            <span class="cmd-badge">BASIC</span>
+            <div>
+              <div class="cmd-name">git log</div>
+              <div class="cmd-oneliner">commit ইতিহাস দেখো</div>
+            </div>
+          </div>
+          <div class="cmd-body">
+            <div class="cmd-what">
+              <div class="cmd-label">🔷 কী করে</div>
+              <div class="cmd-text">সব commit-এর তালিকা দেখায় — তারিখ, লেখক, বার্তা সহ। নতুন commit সবার উপরে থাকে।
+              </div>
+            </div>
+            <div class="cmd-why">
+              <div class="cmd-label">🔶 কেন ব্যবহার করবে</div>
+              <div class="cmd-text">কে কখন কী পরিবর্তন করেছে জানতে। নির্দিষ্ট commit খুঁজতে।</div>
+            </div>
+            <div class="cmd-when">
+              <div class="cmd-label">🕐 কখন</div>
+              <div class="cmd-text">ইতিহাস পর্যালোচনার সময়, bug খুঁজতে, বা পুরনো version-এ ফিরতে।</div>
+            </div>
+            <div class="examples">
+              <div class="examples-title">উদাহরণ</div>
+              <span class="code-line">git log</span>
+              <span class="code-line">git log --oneline <span class="comment"># সংক্ষিপ্ত তালিকা</span></span>
+              <span class="code-line">git log --graph --all <span class="comment"># ব্রাঞ্চ গ্রাফ</span></span>
+              <span class="code-line">git log -5 <span class="comment"># শেষ ৫টি commit</span></span>
+            </div>
+          </div>
+        </div>
+
+        <div class="cmd-card" data-cmd="git diff">
+          <div class="cmd-header">
+            <span class="cmd-badge">BASIC</span>
+            <div>
+              <div class="cmd-name">git diff</div>
+              <div class="cmd-oneliner">পরিবর্তনের বিস্তারিত দেখো</div>
+            </div>
+          </div>
+          <div class="cmd-body">
+            <div class="cmd-what">
+              <div class="cmd-label">🔷 কী করে</div>
+              <div class="cmd-text">ঠিক কোন লাইনে কী পরিবর্তন হয়েছে সেটা line-by-line দেখায়। সবুজ = যোগ করা, লাল =
+                মুছা।</div>
+            </div>
+            <div class="cmd-why">
+              <div class="cmd-label">🔶 কেন ব্যবহার করবে</div>
+              <div class="cmd-text">Commit করার আগে কী পরিবর্তন করেছ review করতে।</div>
+            </div>
+            <div class="cmd-when">
+              <div class="cmd-label">🕐 কখন</div>
+              <div class="cmd-text">git add করার আগে পরিবর্তন যাচাই করতে।</div>
+            </div>
+            <div class="examples">
+              <div class="examples-title">উদাহরণ</div>
+              <span class="code-line">git diff <span class="comment"># unstaged পরিবর্তন</span></span>
+              <span class="code-line">git diff --staged <span class="comment"># staged পরিবর্তন</span></span>
+              <span class="code-line">git diff main feature <span class="comment"># দুই ব্রাঞ্চ তুলনা</span></span>
+            </div>
+          </div>
+        </div>
+
+        <div class="cmd-card" data-cmd="git show">
+          <div class="cmd-header">
+            <span class="cmd-badge">BASIC</span>
+            <div>
+              <div class="cmd-name">git show</div>
+              <div class="cmd-oneliner">নির্দিষ্ট commit-এর বিবরণ</div>
+            </div>
+          </div>
+          <div class="cmd-body">
+            <div class="cmd-what">
+              <div class="cmd-label">🔷 কী করে</div>
+              <div class="cmd-text">একটি নির্দিষ্ট commit-এ কী পরিবর্তন হয়েছিল সেটা বিস্তারিত দেখায়।</div>
+            </div>
+            <div class="cmd-why">
+              <div class="cmd-label">🔶 কেন ব্যবহার করবে</div>
+              <div class="cmd-text">কোনো পুরনো commit কী করেছিল জানতে হলে।</div>
+            </div>
+            <div class="cmd-when">
+              <div class="cmd-label">🕐 কখন</div>
+              <div class="cmd-text">Bug tracing বা code review-এর সময়।</div>
+            </div>
+            <div class="examples">
+              <div class="examples-title">উদাহরণ</div>
+              <span class="code-line">git show <span class="comment"># শেষ commit দেখো</span></span>
+              <span class="code-line">git show abc1234 <span class="comment"># নির্দিষ্ট commit</span></span>
+              <span class="code-line">git show HEAD~2 <span class="comment"># ২টি আগের commit</span></span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- BRANCH & MERGE -->
+    <div class="section cat-branch" id="branch">
+      <div class="section-header">
+        <div class="section-icon" style="background:rgba(78,201,148,0.15)">🌿</div>
+        <div>
+          <div class="section-title">ব্রাঞ্চ ও মার্জ</div>
+          <div class="section-desc">আলাদা লাইনে কাজ করো, তারপর একত্রিত করো</div>
+        </div>
+      </div>
+      <div class="cmd-grid">
+
+        <div class="cmd-card" data-cmd="git branch">
+          <div class="cmd-header">
+            <span class="cmd-badge">BRANCH</span>
+            <div>
+              <div class="cmd-name">git branch</div>
+              <div class="cmd-oneliner">ব্রাঞ্চ তৈরি ও দেখো</div>
+            </div>
+          </div>
+          <div class="cmd-body">
+            <div class="cmd-what">
+              <div class="cmd-label">🔷 কী করে</div>
+              <div class="cmd-text">ব্রাঞ্চের তালিকা দেখায়, নতুন ব্রাঞ্চ তৈরি করে, বা মুছে দেয়। ব্রাঞ্চ হলো মূল কোড
+                থেকে আলাদা একটি copy যেখানে স্বাধীনভাবে কাজ করা যায়।</div>
+            </div>
+            <div class="cmd-why">
+              <div class="cmd-label">🔶 কেন ব্যবহার করবে</div>
+              <div class="cmd-text">নতুন feature বানাতে বা bug fix করতে main code না ভেঙে আলাদা জায়গায় কাজ করতে।</div>
+            </div>
+            <div class="cmd-when">
+              <div class="cmd-label">🕐 কখন</div>
+              <div class="cmd-text">যেকোনো নতুন কাজ শুরু করার আগে।</div>
+            </div>
+            <div class="examples">
+              <div class="examples-title">উদাহরণ</div>
+              <span class="code-line">git branch <span class="comment"># সব ব্রাঞ্চ দেখো</span></span>
+              <span class="code-line">git branch login-feature <span class="comment"># নতুন ব্রাঞ্চ তৈরি</span></span>
+              <span class="code-line">git branch -d login-feature <span class="comment"># ব্রাঞ্চ মুছো</span></span>
+              <span class="code-line">git branch -a <span class="comment"># remote সহ সব ব্রাঞ্চ</span></span>
+            </div>
+          </div>
+        </div>
+
+        <div class="cmd-card" data-cmd="git checkout">
+          <div class="cmd-header">
+            <span class="cmd-badge">BRANCH</span>
+            <div>
+              <div class="cmd-name">git checkout</div>
+              <div class="cmd-oneliner">ব্রাঞ্চ বদলাও বা ফাইল ফেরাও</div>
+            </div>
+          </div>
+          <div class="cmd-body">
+            <div class="cmd-what">
+              <div class="cmd-label">🔷 কী করে</div>
+              <div class="cmd-text">এক ব্রাঞ্চ থেকে অন্য ব্রাঞ্চে সরে যায়। অথবা কোনো ফাইলকে আগের অবস্থায় ফিরিয়ে দেয়।
+              </div>
+            </div>
+            <div class="cmd-why">
+              <div class="cmd-label">🔶 কেন ব্যবহার করবে</div>
+              <div class="cmd-text">ভিন্ন feature-এ কাজ করতে বা পুরনো কোড দেখতে।</div>
+            </div>
+            <div class="cmd-when">
+              <div class="cmd-label">🕐 কখন</div>
+              <div class="cmd-text">যখন ব্রাঞ্চ বদলাতে হবে।</div>
+            </div>
+            <div class="examples">
+              <div class="examples-title">উদাহরণ</div>
+              <span class="code-line">git checkout main <span class="comment"># main ব্রাঞ্চে যাও</span></span>
+              <span class="code-line">git checkout -b new-feature <span class="comment"># বানাও ও চলে যাও</span></span>
+              <span class="code-line">git checkout -- index.html <span class="comment"># ফাইল ফিরিয়ে আনো</span></span>
+            </div>
+          </div>
+        </div>
+
+        <div class="cmd-card" data-cmd="git switch">
+          <div class="cmd-header">
+            <span class="cmd-badge">BRANCH</span>
+            <div>
+              <div class="cmd-name">git switch</div>
+              <div class="cmd-oneliner">ব্রাঞ্চ পরিবর্তন (নতুন পদ্ধতি)</div>
+            </div>
+          </div>
+          <div class="cmd-body">
+            <div class="cmd-what">
+              <div class="cmd-label">🔷 কী করে</div>
+              <div class="cmd-text">git checkout-এর মতোই কাজ করে তবে শুধু ব্রাঞ্চ পরিবর্তনের জন্য। আধুনিক Git-এ এটাই
+                প্রস্তাবিত।</div>
+            </div>
+            <div class="cmd-why">
+              <div class="cmd-label">🔶 কেন ব্যবহার করবে</div>
+              <div class="cmd-text">checkout-এর চেয়ে বেশি স্পষ্ট, কম বিভ্রান্তিকর।</div>
+            </div>
+            <div class="cmd-when">
+              <div class="cmd-label">🕐 কখন</div>
+              <div class="cmd-text">ব্রাঞ্চ পরিবর্তনের যেকোনো সময়।</div>
+            </div>
+            <div class="examples">
+              <div class="examples-title">উদাহরণ</div>
+              <span class="code-line">git switch main</span>
+              <span class="code-line">git switch -c new-feature <span class="comment"># তৈরি করে চলে যাও</span></span>
+              <span class="code-line">git switch - <span class="comment"># আগের ব্রাঞ্চে ফিরে যাও</span></span>
+            </div>
+          </div>
+        </div>
+
+        <div class="cmd-card" data-cmd="git merge">
+          <div class="cmd-header">
+            <span class="cmd-badge">BRANCH</span>
+            <div>
+              <div class="cmd-name">git merge</div>
+              <div class="cmd-oneliner">দুটি ব্রাঞ্চ একত্রিত করো</div>
+            </div>
+          </div>
+          <div class="cmd-body">
+            <div class="cmd-what">
+              <div class="cmd-label">🔷 কী করে</div>
+              <div class="cmd-text">একটি ব্রাঞ্চের সব পরিবর্তন বর্তমান ব্রাঞ্চে নিয়ে আসে এবং একটি merge commit তৈরি
+                করে।</div>
+            </div>
+            <div class="cmd-why">
+              <div class="cmd-label">🔶 কেন ব্যবহার করবে</div>
+              <div class="cmd-text">Feature development শেষে main ব্রাঞ্চে যুক্ত করতে।</div>
+            </div>
+            <div class="cmd-when">
+              <div class="cmd-label">🕐 কখন</div>
+              <div class="cmd-text">Feature বা bug-fix ব্রাঞ্চ সম্পন্ন হলে।</div>
+            </div>
+            <div class="examples">
+              <div class="examples-title">উদাহরণ</div>
+              <span class="code-line">git switch main</span>
+              <span class="code-line">git merge feature-login <span class="comment"># merge করো</span></span>
+              <span class="code-line">git merge --no-ff feature <span class="comment"># merge commit জোর
+                  করো</span></span>
+              <span class="code-line">git merge --abort <span class="comment"># conflict হলে বাতিল</span></span>
+            </div>
+          </div>
+        </div>
+
+        <div class="cmd-card" data-cmd="git rebase">
+          <div class="cmd-header">
+            <span class="cmd-badge">BRANCH</span>
+            <div>
+              <div class="cmd-name">git rebase</div>
+              <div class="cmd-oneliner">commit ইতিহাস পুনর্লিখন</div>
+            </div>
+          </div>
+          <div class="cmd-body">
+            <div class="cmd-what">
+              <div class="cmd-label">🔷 কী করে</div>
+              <div class="cmd-text">একটি ব্রাঞ্চের commit গুলো অন্য ব্রাঞ্চের উপর নতুনভাবে প্রয়োগ করে। ইতিহাস সরলরেখায়
+                থাকে।</div>
+            </div>
+            <div class="cmd-why">
+              <div class="cmd-label">🔶 কেন ব্যবহার করবে</div>
+              <div class="cmd-text">পরিষ্কার, linear ইতিহাস রাখতে চাইলে merge-এর বদলে rebase ব্যবহার করা হয়।</div>
+            </div>
+            <div class="cmd-when">
+              <div class="cmd-label">🕐 কখন</div>
+              <div class="cmd-text">Push করার আগে local commit পরিষ্কার করতে। ⚠️ Shared branch-এ rebase করবে না।</div>
+            </div>
+            <div class="examples">
+              <div class="examples-title">উদাহরণ</div>
+              <span class="code-line">git rebase main <span class="comment"># main-এর উপর rebase</span></span>
+              <span class="code-line">git rebase -i HEAD~3 <span class="comment"># শেষ ৩ commit edit</span></span>
+              <span class="code-line">git rebase --abort <span class="comment"># বাতিল করো</span></span>
+            </div>
+          </div>
+        </div>
+
+        <div class="cmd-card" data-cmd="git stash">
+          <div class="cmd-header">
+            <span class="cmd-badge">BRANCH</span>
+            <div>
+              <div class="cmd-name">git stash</div>
+              <div class="cmd-oneliner">কাজ সাময়িক লুকিয়ে রাখো</div>
+            </div>
+          </div>
+          <div class="cmd-body">
+            <div class="cmd-what">
+              <div class="cmd-label">🔷 কী করে</div>
+              <div class="cmd-text">Uncommitted পরিবর্তনগুলো একটি অস্থায়ী জায়গায় সরিয়ে রাখে, working directory
+                পরিষ্কার করে।</div>
+            </div>
+            <div class="cmd-why">
+              <div class="cmd-label">🔶 কেন ব্যবহার করবে</div>
+              <div class="cmd-text">মাঝপথে ব্রাঞ্চ বদলাতে হলে কিন্তু commit করার মতো হয়নি।</div>
+            </div>
+            <div class="cmd-when">
+              <div class="cmd-label">🕐 কখন</div>
+              <div class="cmd-text">জরুরি bug fix করতে অন্য ব্রাঞ্চে যেতে হলে।</div>
+            </div>
+            <div class="examples">
+              <div class="examples-title">উদাহরণ</div>
+              <span class="code-line">git stash <span class="comment"># কাজ লুকাও</span></span>
+              <span class="code-line">git stash pop <span class="comment"># ফিরিয়ে আনো</span></span>
+              <span class="code-line">git stash list <span class="comment"># সব stash দেখো</span></span>
+              <span class="code-line">git stash apply stash@{2}</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- REMOTE -->
+    <div class="section cat-remote" id="remote">
+      <div class="section-header">
+        <div class="section-icon" style="background:rgba(167,139,250,0.15)">☁️</div>
+        <div>
+          <div class="section-title">রিমোট রেপোজিটরি</div>
+          <div class="section-desc">GitHub, GitLab বা অন্য সার্ভারের সাথে কাজ</div>
+        </div>
+      </div>
+      <div class="cmd-grid">
+
+        <div class="cmd-card" data-cmd="git remote">
+          <div class="cmd-header">
+            <span class="cmd-badge">REMOTE</span>
+            <div>
+              <div class="cmd-name">git remote</div>
+              <div class="cmd-oneliner">রিমোট সংযোগ ব্যবস্থাপনা</div>
+            </div>
+          </div>
+          <div class="cmd-body">
+            <div class="cmd-what">
+              <div class="cmd-label">🔷 কী করে</div>
+              <div class="cmd-text">Remote repository-র সংযোগ দেখায়, যোগ করে বা সরায়। সাধারণত origin নামে GitHub-এর
+                লিংক থাকে।</div>
+            </div>
+            <div class="cmd-why">
+              <div class="cmd-label">🔶 কেন ব্যবহার করবে</div>
+              <div class="cmd-text">কোথায় push বা pull হচ্ছে সেটা সেট বা পরিবর্তন করতে।</div>
+            </div>
+            <div class="cmd-when">
+              <div class="cmd-label">🕐 কখন</div>
+              <div class="cmd-text">Local repo-কে GitHub-এর সাথে সংযুক্ত করার সময়।</div>
+            </div>
+            <div class="examples">
+              <div class="examples-title">উদাহরণ</div>
+              <span class="code-line">git remote -v <span class="comment"># সংযোগ দেখো</span></span>
+              <span class="code-line">git remote add origin &lt;url&gt;</span>
+              <span class="code-line">git remote remove origin</span>
+              <span class="code-line">git remote rename origin upstream</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="cmd-card" data-cmd="git push">
+          <div class="cmd-header">
+            <span class="cmd-badge">REMOTE</span>
+            <div>
+              <div class="cmd-name">git push</div>
+              <div class="cmd-oneliner">রিমোটে কোড আপলোড করো</div>
+            </div>
+          </div>
+          <div class="cmd-body">
+            <div class="cmd-what">
+              <div class="cmd-label">🔷 কী করে</div>
+              <div class="cmd-text">Local repository-র commit গুলো remote (যেমন GitHub) এ আপলোড করে।</div>
+            </div>
+            <div class="cmd-why">
+              <div class="cmd-label">🔶 কেন ব্যবহার করবে</div>
+              <div class="cmd-text">কোড backup রাখতে, টিমের সাথে শেয়ার করতে।</div>
+            </div>
+            <div class="cmd-when">
+              <div class="cmd-label">🕐 কখন</div>
+              <div class="cmd-text">Commit শেষ হলে, অন্যদের সাথে শেয়ার করতে চাইলে।</div>
+            </div>
+            <div class="examples">
+              <div class="examples-title">উদাহরণ</div>
+              <span class="code-line">git push origin main</span>
+              <span class="code-line">git push -u origin feature <span class="comment"># প্রথমবার</span></span>
+              <span class="code-line">git push --all <span class="comment"># সব ব্রাঞ্চ push</span></span>
+              <span class="code-line">git push --force-with-lease <span class="comment"># সতর্কে force
+                  push</span></span>
+            </div>
+          </div>
+        </div>
+
+        <div class="cmd-card" data-cmd="git pull">
+          <div class="cmd-header">
+            <span class="cmd-badge">REMOTE</span>
+            <div>
+              <div class="cmd-name">git pull</div>
+              <div class="cmd-oneliner">রিমোট থেকে আপডেট আনো</div>
+            </div>
+          </div>
+          <div class="cmd-body">
+            <div class="cmd-what">
+              <div class="cmd-label">🔷 কী করে</div>
+              <div class="cmd-text">Remote থেকে নতুন পরিবর্তন নিয়ে আসে এবং সাথে সাথে merge করে দেয়। এটি আসলে fetch +
+                merge একসাথে।</div>
+            </div>
+            <div class="cmd-why">
+              <div class="cmd-label">🔶 কেন ব্যবহার করবে</div>
+              <div class="cmd-text">টিমের অন্যরা যে পরিবর্তন করেছে সেটা নিজের কাছে আনতে।</div>
+            </div>
+            <div class="cmd-when">
+              <div class="cmd-label">🕐 কখন</div>
+              <div class="cmd-text">কাজ শুরু করার আগে সবসময়। Push করার আগে।</div>
+            </div>
+            <div class="examples">
+              <div class="examples-title">উদাহরণ</div>
+              <span class="code-line">git pull origin main</span>
+              <span class="code-line">git pull --rebase <span class="comment"># rebase দিয়ে pull</span></span>
+              <span class="code-line">git pull <span class="comment"># default remote থেকে</span></span>
+            </div>
+          </div>
+        </div>
+
+        <div class="cmd-card" data-cmd="git fetch">
+          <div class="cmd-header">
+            <span class="cmd-badge">REMOTE</span>
+            <div>
+              <div class="cmd-name">git fetch</div>
+              <div class="cmd-oneliner">রিমোট info আনো, merge নয়</div>
+            </div>
+          </div>
+          <div class="cmd-body">
+            <div class="cmd-what">
+              <div class="cmd-label">🔷 কী করে</div>
+              <div class="cmd-text">Remote থেকে নতুন পরিবর্তন ডাউনলোড করে কিন্তু local ব্রাঞ্চে merge করে না। দেখার
+                সুযোগ দেয়।</div>
+            </div>
+            <div class="cmd-why">
+              <div class="cmd-label">🔶 কেন ব্যবহার করবে</div>
+              <div class="cmd-text">কী পরিবর্তন আসছে আগে দেখতে চাইলে, merge না করেই।</div>
+            </div>
+            <div class="cmd-when">
+              <div class="cmd-label">🕐 কখন</div>
+              <div class="cmd-text">Remote এ কী হয়েছে review করতে চাইলে।</div>
+            </div>
+            <div class="examples">
+              <div class="examples-title">উদাহরণ</div>
+              <span class="code-line">git fetch origin</span>
+              <span class="code-line">git fetch --all <span class="comment"># সব remote থেকে</span></span>
+              <span class="code-line">git diff main origin/main <span class="comment"># পার্থক্য দেখো</span></span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- UNDO -->
+    <div class="section cat-undo" id="undo">
+      <div class="section-header">
+        <div class="section-icon" style="background:rgba(240,165,0,0.15)">↩️</div>
+        <div>
+          <div class="section-title">পূর্বাবস্থায় ফেরা</div>
+          <div class="section-desc">ভুল হলে ফিরে যাও — Git সবসময় সাহায্য করবে</div>
+        </div>
+      </div>
+      <div class="cmd-grid">
+
+        <div class="cmd-card" data-cmd="git revert">
+          <div class="cmd-header">
+            <span class="cmd-badge">UNDO</span>
+            <div>
+              <div class="cmd-name">git revert</div>
+              <div class="cmd-oneliner">নিরাপদে commit বাতিল করো</div>
+            </div>
+          </div>
+          <div class="cmd-body">
+            <div class="cmd-what">
+              <div class="cmd-label">🔷 কী করে</div>
+              <div class="cmd-text">একটি commit-এর বিপরীত কাজ করে নতুন একটি commit তৈরি করে। পুরনো ইতিহাস অক্ষত থাকে।
+              </div>
+            </div>
+            <div class="cmd-why">
+              <div class="cmd-label">🔶 কেন ব্যবহার করবে</div>
+              <div class="cmd-text">Push করা commit বাতিল করতে হলে এটাই সঠিক পদ্ধতি। ইতিহাস নষ্ট হয় না।</div>
+            </div>
+            <div class="cmd-when">
+              <div class="cmd-label">🕐 কখন</div>
+              <div class="cmd-text">Shared/public branch-এ ভুল commit ঠিক করতে।</div>
+            </div>
+            <div class="examples">
+              <div class="examples-title">উদাহরণ</div>
+              <span class="code-line">git revert HEAD <span class="comment"># শেষ commit বাতিল</span></span>
+              <span class="code-line">git revert abc1234 <span class="comment"># নির্দিষ্ট commit</span></span>
+              <span class="code-line">git revert HEAD~3..HEAD <span class="comment"># শেষ ৩টি</span></span>
+            </div>
+          </div>
+        </div>
+
+        <div class="cmd-card" data-cmd="git reset">
+          <div class="cmd-header">
+            <span class="cmd-badge">UNDO</span>
+            <div>
+              <div class="cmd-name">git reset</div>
+              <div class="cmd-oneliner">commit পয়েন্টার সরাও</div>
+            </div>
+          </div>
+          <div class="cmd-body">
+            <div class="cmd-what">
+              <div class="cmd-label">🔷 কী করে</div>
+              <div class="cmd-text">HEAD pointer-কে পূর্ববর্তী commit-এ নিয়ে যায়। --soft (ফাইল রাখে), --mixed
+                (unstaged করে), --hard (সব মুছে)।</div>
+            </div>
+            <div class="cmd-why">
+              <div class="cmd-label">🔶 কেন ব্যবহার করবে</div>
+              <div class="cmd-text">Push করার আগে local commit ঠিক করতে।</div>
+            </div>
+            <div class="cmd-when">
+              <div class="cmd-label">🕐 কখন</div>
+              <div class="cmd-text">⚠️ শুধু local ব্রাঞ্চে। Push করা commit-এ reset করবে না।</div>
+            </div>
+            <div class="examples">
+              <div class="examples-title">উদাহরণ</div>
+              <span class="code-line">git reset --soft HEAD~1 <span class="comment"># commit বাতিল, ফাইল
+                  staged</span></span>
+              <span class="code-line">git reset HEAD~1 <span class="comment"># unstaged করে রাখে</span></span>
+              <span class="code-line">git reset --hard HEAD~1 <span class="comment"># ⚠️ সব মুছে যাবে</span></span>
+            </div>
+          </div>
+        </div>
+
+        <div class="cmd-card" data-cmd="git restore">
+          <div class="cmd-header">
+            <span class="cmd-badge">UNDO</span>
+            <div>
+              <div class="cmd-name">git restore</div>
+              <div class="cmd-oneliner">ফাইল পুনরুদ্ধার করো</div>
+            </div>
+          </div>
+          <div class="cmd-body">
+            <div class="cmd-what">
+              <div class="cmd-label">🔷 কী করে</div>
+              <div class="cmd-text">Working directory বা staging area-র ফাইলকে পূর্ববর্তী অবস্থায় ফিরিয়ে আনে।</div>
+            </div>
+            <div class="cmd-why">
+              <div class="cmd-label">🔶 কেন ব্যবহার করবে</div>
+              <div class="cmd-text">ভুলভাবে কোনো ফাইল পরিবর্তন করে ফেললে।</div>
+            </div>
+            <div class="cmd-when">
+              <div class="cmd-label">🕐 কখন</div>
+              <div class="cmd-text">Commit করার আগে কোনো পরিবর্তন বাতিল করতে।</div>
+            </div>
+            <div class="examples">
+              <div class="examples-title">উদাহরণ</div>
+              <span class="code-line">git restore index.html <span class="comment"># ফাইল ফেরাও</span></span>
+              <span class="code-line">git restore --staged file.js <span class="comment"># unstage করো</span></span>
+              <span class="code-line">git restore . <span class="comment"># সব ফাইল ফেরাও</span></span>
+            </div>
+          </div>
+        </div>
+
+        <div class="cmd-card" data-cmd="git clean">
+          <div class="cmd-header">
+            <span class="cmd-badge">UNDO</span>
+            <div>
+              <div class="cmd-name">git clean</div>
+              <div class="cmd-oneliner">Untracked ফাইল মুছো</div>
+            </div>
+          </div>
+          <div class="cmd-body">
+            <div class="cmd-what">
+              <div class="cmd-label">🔷 কী করে</div>
+              <div class="cmd-text">Git-এ track করা হয়নি এমন ফাইল এবং ফোল্ডার মুছে দেয়।</div>
+            </div>
+            <div class="cmd-why">
+              <div class="cmd-label">🔶 কেন ব্যবহার করবে</div>
+              <div class="cmd-text">Build files বা অপ্রয়োজনীয় ফাইল দ্রুত পরিষ্কার করতে।</div>
+            </div>
+            <div class="cmd-when">
+              <div class="cmd-label">🕐 কখন</div>
+              <div class="cmd-text">Directory পরিষ্কার করতে চাইলে।</div>
+            </div>
+            <div class="examples">
+              <div class="examples-title">উদাহরণ</div>
+              <span class="code-line">git clean -n <span class="comment"># কী মুছবে দেখো (dry run)</span></span>
+              <span class="code-line">git clean -f <span class="comment"># ফাইল মুছো</span></span>
+              <span class="code-line">git clean -fd <span class="comment"># ফাইল + ফোল্ডার</span></span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ADVANCED -->
+    <div class="section cat-adv" id="advanced">
+      <div class="section-header">
+        <div class="section-icon" style="background:rgba(255,124,92,0.15)">⚡</div>
+        <div>
+          <div class="section-title">অ্যাডভান্সড কমান্ড</div>
+          <div class="section-desc">দক্ষ developer-দের টুলস</div>
+        </div>
+      </div>
+      <div class="cmd-grid">
+
+        <div class="cmd-card" data-cmd="git cherry-pick">
+          <div class="cmd-header">
+            <span class="cmd-badge">ADV</span>
+            <div>
+              <div class="cmd-name">git cherry-pick</div>
+              <div class="cmd-oneliner">নির্দিষ্ট commit তুলে আনো</div>
+            </div>
+          </div>
+          <div class="cmd-body">
+            <div class="cmd-what">
+              <div class="cmd-label">🔷 কী করে</div>
+              <div class="cmd-text">অন্য ব্রাঞ্চ থেকে একটি নির্দিষ্ট commit বর্তমান ব্রাঞ্চে প্রয়োগ করে, পুরো ব্রাঞ্চ
+                merge না করে।</div>
+            </div>
+            <div class="cmd-why">
+              <div class="cmd-label">🔶 কেন ব্যবহার করবে</div>
+              <div class="cmd-text">অন্য ব্রাঞ্চের একটি নির্দিষ্ট bug fix বা feature শুধু নিজের ব্রাঞ্চে আনতে।</div>
+            </div>
+            <div class="cmd-when">
+              <div class="cmd-label">🕐 কখন</div>
+              <div class="cmd-text">Hotfix একাধিক ব্রাঞ্চে প্রয়োগ করতে।</div>
+            </div>
+            <div class="examples">
+              <div class="examples-title">উদাহরণ</div>
+              <span class="code-line">git cherry-pick abc1234</span>
+              <span class="code-line">git cherry-pick abc1234 def5678 <span class="comment"># একাধিক</span></span>
+              <span class="code-line">git cherry-pick main~3..main</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="cmd-card" data-cmd="git tag">
+          <div class="cmd-header">
+            <span class="cmd-badge">ADV</span>
+            <div>
+              <div class="cmd-name">git tag</div>
+              <div class="cmd-oneliner">ভার্সন চিহ্নিত করো</div>
+            </div>
+          </div>
+          <div class="cmd-body">
+            <div class="cmd-what">
+              <div class="cmd-label">🔷 কী করে</div>
+              <div class="cmd-text">একটি নির্দিষ্ট commit-কে একটি নাম দেয় (যেমন v1.0.0)। Release বা milestone চিহ্নিত
+                করতে ব্যবহার হয়।</div>
+            </div>
+            <div class="cmd-why">
+              <div class="cmd-label">🔶 কেন ব্যবহার করবে</div>
+              <div class="cmd-text">Software release ট্র্যাক করতে, ভার্সন ম্যানেজমেন্টে।</div>
+            </div>
+            <div class="cmd-when">
+              <div class="cmd-label">🕐 কখন</div>
+              <div class="cmd-text">নতুন version release করার সময়।</div>
+            </div>
+            <div class="examples">
+              <div class="examples-title">উদাহরণ</div>
+              <span class="code-line">git tag v1.0.0</span>
+              <span class="code-line">git tag -a v1.0.0 -m "প্রথম রিলিজ"</span>
+              <span class="code-line">git push origin --tags</span>
+              <span class="code-line">git tag -l <span class="comment"># সব tag দেখো</span></span>
+            </div>
+          </div>
+        </div>
+
+        <div class="cmd-card" data-cmd="git bisect">
+          <div class="cmd-header">
+            <span class="cmd-badge">ADV</span>
+            <div>
+              <div class="cmd-name">git bisect</div>
+              <div class="cmd-oneliner">Bug-এর উৎস খুঁজে বের করো</div>
+            </div>
+          </div>
+          <div class="cmd-body">
+            <div class="cmd-what">
+              <div class="cmd-label">🔷 কী করে</div>
+              <div class="cmd-text">Binary search পদ্ধতিতে commit ইতিহাস ঘেঁটে কোন commit-এ bug ঢুকেছে সেটা বের করে।
+              </div>
+            </div>
+            <div class="cmd-why">
+              <div class="cmd-label">🔶 কেন ব্যবহার করবে</div>
+              <div class="cmd-text">হাজারো commit-এর মধ্যে দ্রুত bug-এর উৎস খুঁজতে।</div>
+            </div>
+            <div class="cmd-when">
+              <div class="cmd-label">🕐 কখন</div>
+              <div class="cmd-text">কখন bug ঢুকেছে জানা নেই কিন্তু কোনো commit-এ ঠিক ছিল।</div>
+            </div>
+            <div class="examples">
+              <div class="examples-title">উদাহরণ</div>
+              <span class="code-line">git bisect start</span>
+              <span class="code-line">git bisect bad <span class="comment"># এখন bug আছে</span></span>
+              <span class="code-line">git bisect good v1.0 <span class="comment"># এখানে ভালো ছিল</span></span>
+              <span class="code-line">git bisect reset <span class="comment"># শেষ করো</span></span>
+            </div>
+          </div>
+        </div>
+
+        <div class="cmd-card" data-cmd="git blame">
+          <div class="cmd-header">
+            <span class="cmd-badge">ADV</span>
+            <div>
+              <div class="cmd-name">git blame</div>
+              <div class="cmd-oneliner">কোন লাইন কে লিখেছে জানো</div>
+            </div>
+          </div>
+          <div class="cmd-body">
+            <div class="cmd-what">
+              <div class="cmd-label">🔷 কী করে</div>
+              <div class="cmd-text">একটি ফাইলের প্রতিটি লাইনে কে, কখন, কোন commit-এ লিখেছে সেটা দেখায়।</div>
+            </div>
+            <div class="cmd-why">
+              <div class="cmd-label">🔶 কেন ব্যবহার করবে</div>
+              <div class="cmd-text">কোনো code কে লিখেছে বা কোন commit-এ এই লাইন এসেছে জানতে।</div>
+            </div>
+            <div class="cmd-when">
+              <div class="cmd-label">🕐 কখন</div>
+              <div class="cmd-text">Code review বা bug tracing-এর সময়।</div>
+            </div>
+            <div class="examples">
+              <div class="examples-title">উদাহরণ</div>
+              <span class="code-line">git blame index.html</span>
+              <span class="code-line">git blame -L 10,20 app.js <span class="comment"># ১০-২০ নং লাইন</span></span>
+            </div>
+          </div>
+        </div>
+
+        <div class="cmd-card" data-cmd="git reflog">
+          <div class="cmd-header">
+            <span class="cmd-badge">ADV</span>
+            <div>
+              <div class="cmd-name">git reflog</div>
+              <div class="cmd-oneliner">HEAD-এর সব নড়াচড়া দেখো</div>
+            </div>
+          </div>
+          <div class="cmd-body">
+            <div class="cmd-what">
+              <div class="cmd-label">🔷 কী করে</div>
+              <div class="cmd-text">HEAD pointer কখন কোথায় ছিল তার সম্পূর্ণ ইতিহাস রাখে। হারানো commit পুনরুদ্ধারের শেষ
+                অস্ত্র।</div>
+            </div>
+            <div class="cmd-why">
+              <div class="cmd-label">🔶 কেন ব্যবহার করবে</div>
+              <div class="cmd-text">git reset --hard বা ভুল rebase-এ হারানো কাজ ফিরে পেতে।</div>
+            </div>
+            <div class="cmd-when">
+              <div class="cmd-label">🕐 কখন</div>
+              <div class="cmd-text">⚠️ জরুরি অবস্থায়, কোড হারিয়ে গেলে।</div>
+            </div>
+            <div class="examples">
+              <div class="examples-title">উদাহরণ</div>
+              <span class="code-line">git reflog</span>
+              <span class="code-line">git checkout HEAD@{3} <span class="comment"># ৩ steps আগে যাও</span></span>
+              <span class="code-line">git reset --hard HEAD@{2}</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="cmd-card" data-cmd="git submodule">
+          <div class="cmd-header">
+            <span class="cmd-badge">ADV</span>
+            <div>
+              <div class="cmd-name">git submodule</div>
+              <div class="cmd-oneliner">রেপোর মধ্যে রেপো রাখো</div>
+            </div>
+          </div>
+          <div class="cmd-body">
+            <div class="cmd-what">
+              <div class="cmd-label">🔷 কী করে</div>
+              <div class="cmd-text">একটি রেপোকে অন্য রেপোর ভেতরে একটি নির্দিষ্ট commit-এ link করে রাখে।</div>
+            </div>
+            <div class="cmd-why">
+              <div class="cmd-label">🔶 কেন ব্যবহার করবে</div>
+              <div class="cmd-text">বড় প্রোজেক্টে external dependency বা shared library আলাদা রেপো হিসেবে রাখতে।</div>
+            </div>
+            <div class="cmd-when">
+              <div class="cmd-label">🕐 কখন</div>
+              <div class="cmd-text">Monorepo setup বা external library ট্র্যাক করতে।</div>
+            </div>
+            <div class="examples">
+              <div class="examples-title">উদাহরণ</div>
+              <span class="code-line">git submodule add &lt;url&gt; libs/name</span>
+              <span class="code-line">git submodule update --init</span>
+              <span class="code-line">git submodule update --recursive</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- CHEATSHEET -->
+    <div class="section" id="cheat">
+      <div class="section-header">
+        <div class="section-icon" style="background:rgba(78,201,148,0.15)">📋</div>
+        <div>
+          <div class="section-title">দ্রুত চিটশিট</div>
+          <div class="section-desc">সব কমান্ড এক নজরে</div>
+        </div>
+      </div>
+      <div class="cheat-grid">
+        <div class="cheat-item"><span class="cheat-cmd">git init</span><span class="cheat-desc">রেপো শুরু করো</span>
+        </div>
+        <div class="cheat-item"><span class="cheat-cmd">git clone &lt;url&gt;</span><span class="cheat-desc">রেমোট রেপো
+            কপি করো</span></div>
+        <div class="cheat-item"><span class="cheat-cmd">git status</span><span class="cheat-desc">বর্তমান অবস্থা
+            দেখো</span></div>
+        <div class="cheat-item"><span class="cheat-cmd">git add .</span><span class="cheat-desc">সব ফাইল stage
+            করো</span></div>
+        <div class="cheat-item"><span class="cheat-cmd">git commit -m ""</span><span class="cheat-desc">পরিবর্তন সেভ
+            করো</span></div>
+        <div class="cheat-item"><span class="cheat-cmd">git log --oneline</span><span class="cheat-desc">সংক্ষিপ্ত
+            ইতিহাস</span></div>
+        <div class="cheat-item"><span class="cheat-cmd">git diff</span><span class="cheat-desc">পরিবর্তন বিস্তারিত
+            দেখো</span></div>
+        <div class="cheat-item"><span class="cheat-cmd">git branch</span><span class="cheat-desc">ব্রাঞ্চ তালিকা</span>
+        </div>
+        <div class="cheat-item"><span class="cheat-cmd">git switch -c name</span><span class="cheat-desc">নতুন ব্রাঞ্চ
+            বানাও</span></div>
+        <div class="cheat-item"><span class="cheat-cmd">git merge branch</span><span class="cheat-desc">ব্রাঞ্চ মার্জ
+            করো</span></div>
+        <div class="cheat-item"><span class="cheat-cmd">git push origin main</span><span class="cheat-desc">GitHub-এ
+            আপলোড</span></div>
+        <div class="cheat-item"><span class="cheat-cmd">git pull origin main</span><span class="cheat-desc">GitHub থেকে
+            আপডেট</span></div>
+        <div class="cheat-item"><span class="cheat-cmd">git fetch</span><span class="cheat-desc">merge ছাড়া আপডেট
+            আনো</span></div>
+        <div class="cheat-item"><span class="cheat-cmd">git stash</span><span class="cheat-desc">কাজ সাময়িক সরাও</span>
+        </div>
+        <div class="cheat-item"><span class="cheat-cmd">git stash pop</span><span class="cheat-desc">সরানো কাজ ফিরিয়ে
+            আনো</span></div>
+        <div class="cheat-item"><span class="cheat-cmd">git revert HEAD</span><span class="cheat-desc">শেষ commit
+            নিরাপদে বাতিল</span></div>
+        <div class="cheat-item"><span class="cheat-cmd">git reset --soft</span><span class="cheat-desc">commit বাতিল,
+            ফাইল রাখো</span></div>
+        <div class="cheat-item"><span class="cheat-cmd">git reset --hard</span><span class="cheat-desc">⚠️ সব মুছে
+            ফেলো</span></div>
+        <div class="cheat-item"><span class="cheat-cmd">git restore .</span><span class="cheat-desc">ফাইল পূর্বাবস্থায়
+            ফেরাও</span></div>
+        <div class="cheat-item"><span class="cheat-cmd">git cherry-pick</span><span class="cheat-desc">নির্দিষ্ট commit
+            আনো</span></div>
+        <div class="cheat-item"><span class="cheat-cmd">git rebase -i</span><span class="cheat-desc">ইতিহাস
+            পুনর্লিখন</span></div>
+        <div class="cheat-item"><span class="cheat-cmd">git tag v1.0</span><span class="cheat-desc">ভার্সন চিহ্নিত
+            করো</span></div>
+        <div class="cheat-item"><span class="cheat-cmd">git blame file</span><span class="cheat-desc">কে কী
+            লিখেছে</span></div>
+        <div class="cheat-item"><span class="cheat-cmd">git reflog</span><span class="cheat-desc">হারানো কাজ ফিরে
+            পাও</span></div>
+      </div>
+    </div>
+
+    <!-- TIPS -->
+    <div class="section" id="tips">
+      <div class="section-header">
+        <div class="section-icon" style="background:rgba(240,165,0,0.15)">💡</div>
+        <div>
+          <div class="section-title">গুরুত্বপূর্ণ টিপস</div>
+          <div class="section-desc">ভুল করার আগেই জানো</div>
+        </div>
+      </div>
+      <div class="tips-grid">
+        <div class="tip-card success">
+          <div class="tip-icon">✅</div>
+          <div class="tip-title">ছোট ছোট commit করো</div>
+          <div class="tip-text">একটি কাজ শেষ হলেই commit করো। বড় commit debug করা কঠিন এবং ইতিহাস বোঝা যায় না।</div>
+        </div>
+        <div class="tip-card success">
+          <div class="tip-icon">📝</div>
+          <div class="tip-title">ভালো commit message লেখো</div>
+          <div class="tip-text">"fix bug" নয়, লেখো "লগইন পেজে পাসওয়ার্ড validation ঠিক করা হয়েছে"। ভবিষ্যতে নিজেই
+            বুঝতে পারবে।</div>
+        </div>
+        <div class="tip-card warning">
+          <div class="tip-icon">⚠️</div>
+          <div class="tip-title">main ব্রাঞ্চে সরাসরি কাজ নয়</div>
+          <div class="tip-text">সবসময় নতুন ব্রাঞ্চ খুলে কাজ করো। main বা master ব্রাঞ্চ সবসময় stable রাখো।</div>
+        </div>
+        <div class="tip-card danger">
+          <div class="tip-icon">🚫</div>
+          <div class="tip-title">--force push এড়িয়ে চলো</div>
+          <div class="tip-text">Shared branch-এ git push --force করলে টিমের সবার কাজ মুছে যেতে পারে। অত্যন্ত বিপজ্জনক।
+          </div>
+        </div>
+        <div class="tip-card info">
+          <div class="tip-icon">🔒</div>
+          <div class="tip-title">.gitignore ব্যবহার করো</div>
+          <div class="tip-text">node_modules/, .env, build/ ইত্যাদি ফাইল track করার দরকার নেই। .gitignore ফাইলে লিখে
+            রাখো।</div>
+        </div>
+        <div class="tip-card success">
+          <div class="tip-icon">🔄</div>
+          <div class="tip-title">কাজ শুরুর আগে pull করো</div>
+          <div class="tip-text">প্রতিদিন কাজ শুরু করার আগে git pull করো। এতে conflict কম হয় এবং টিমের সাথে sync থাকো।
+          </div>
+        </div>
+        <div class="tip-card warning">
+          <div class="tip-icon">💾</div>
+          <div class="tip-title">reset --hard এর আগে ভাবো</div>
+          <div class="tip-text">git reset --hard করলে সব অপরিবর্তিত কাজ চিরতরে হারাবে। এর আগে stash বা backup নাও।</div>
+        </div>
+        <div class="tip-card info">
+          <div class="tip-icon">🔍</div>
+          <div class="tip-title">reflog তোমার বন্ধু</div>
+          <div class="tip-text">কোনো কাজ হারিয়ে গেলে হতাশ হয়ো না। git reflog দিয়ে প্রায় যেকোনো কিছু ফিরে পাওয়া
+            যায়।</div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <footer>
+    <p>Website তৈরি করা হয়েছে ❤️ দিয়ে &nbsp;|&nbsp; <span>Git সম্পূর্ণ বাংলা গাইড</span> &nbsp;|&nbsp; সব কমান্ড, সব ব্যাখ্যা,
+      বাংলায়</p>
+  </footer>
+
+  <button class="back-to-top" id="backToTop" onclick="scrollTo('intro', document.querySelector('.nav-btn'))"
+    aria-label="উপরে যান">↑</button>
+
+  <script src="js/script.js"></script>
+
+</body>
+
+</html>
