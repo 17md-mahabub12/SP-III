@@ -71,3 +71,14 @@
     e.preventDefault();
     input.focus();
   });
+
+  // Keyboard shortcut: "Escape" clears search
+  window.addEventListener('keydown', (e) => {
+    if (e.key !== 'Escape') return;
+    const input = document.getElementById('searchInput');
+    if (!input) return;
+    if (!input.value) return;
+    input.value = '';
+    filterCards('');
+    input.focus();
+  });
