@@ -40,5 +40,3 @@ This repo will demonstrate:
 - Recovery using `git reflog`
 - Release tag `v1.0.0`
 
-> Note: Some requirements (merge commit + merge conflict) are demonstrated directly in the commit history of `master`.
-
