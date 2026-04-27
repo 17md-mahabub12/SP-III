@@ -653,6 +653,23 @@
     color: var(--text3);
   }
 
+  .search-hint {
+    margin-top: 6px;
+    padding-left: 14px;
+    font-size: 0.8rem;
+    color: rgba(154, 165, 196, 0.85);
+  }
+
+  .search-hint kbd {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.78rem;
+    padding: 2px 7px;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    background: rgba(13, 18, 32, 0.8);
+    color: var(--text);
+  }
+
   .hidden { display: none !important; }
 
   .back-to-top {
