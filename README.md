@@ -16,6 +16,19 @@ The web page is a Bangla-friendly **Git command guide** with navigation, search,
 - Open `index.html` in a browser, or
 - Use VS Code “Live Server” extension (recommended).
 
+## Commands used (high level)
+
+Common commands demonstrated in this repository:
+
+- `git init`, `git add`, `git commit`
+- `git branch`, `git checkout`
+- `git merge --no-ff` (merge commits)
+- conflict resolution (manual fix + merge commit)
+- `git revert`
+- `git restore` / `git reset`
+- `git reflog` (recovery)
+- `git tag -a v1.0.0 -m "First release"`
+
 ## Assignment checklist (Git features)
 
 This repo will demonstrate:
