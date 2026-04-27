@@ -6,6 +6,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ## [Unreleased]
 
+### Documentation
+- Expanded README with commands used and running instructions.
+
 ## [0.1.0] - 2026-04-27
 ### Added
 - Initial project structure (`index.html`, `css/style.css`, `js/script.js`).
